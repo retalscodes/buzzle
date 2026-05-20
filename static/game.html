@@ -20,7 +20,7 @@
       <span id="room-code-badge" class="room-badge"></span>
     </div>
     <div class="header-right">
-      <button id="btn-music" class="btn btn-ghost btn-small music-btn" title="Classical music">♪</button>
+      <button id="btn-music" class="btn btn-ghost btn-small music-btn" title="Play classical music · Hold to skip station">♪</button>
       <div id="timer" class="timer">00:00</div>
     </div>
   </header>
@@ -108,9 +108,7 @@
 </div>
 
 <!-- Classical music (hidden) -->
-<audio id="music-audio" loop crossorigin="anonymous">
-  <source src="https://live.musopen.org:8085/streamvbr0" type="audio/mpeg" />
-</audio>
+<audio id="music-audio" loop crossorigin="anonymous"></audio>
 
 <div id="toast" class="toast"></div>
 

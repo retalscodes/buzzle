@@ -264,18 +264,48 @@ document.getElementById("btn-hint").addEventListener("click", () => {
 });
 
 /* ── music ── */
-musicBtn.addEventListener("click", () => {
-  if (musicAudio.paused) {
-    musicAudio.play().then(() => {
+const STATIONS = [
+  { name: "Radio Swiss Classic",  url: "https://stream.srg-ssr.ch/m/rsc_de/aacp_96" },
+  { name: "France Musique",       url: "https://icecast.radiofrance.fr/francemusique-hifi.aac" },
+  { name: "Classical KING FM",    url: "https://20023.live.streamtheworld.com/KING_FM_HIGH.mp3" },
+  { name: "Calm Radio Classical", url: "https://streams.calmradio.com/api/37/128/stream" },
+  { name: "Venice Classic Radio", url: "https://uk2.streamingpulse.com/ssl/vcr1" },
+];
+let stationIdx = 0;
+
+function loadStation(idx) {
+  stationIdx = ((idx % STATIONS.length) + STATIONS.length) % STATIONS.length;
+  const s = STATIONS[stationIdx];
+  musicAudio.src = s.url;
+  musicAudio.load();
+  musicAudio.play()
+    .then(() => {
       musicBtn.textContent = "♫";
       musicBtn.classList.add("playing");
-    }).catch(() => showToast("Could not load stream."));
+      showToast(`♪ ${s.name}`);
+    })
+    .catch(() => {
+      showToast(`Couldn't load ${s.name}, trying next…`);
+      setTimeout(() => loadStation(stationIdx + 1), 800);
+    });
+}
+
+musicBtn.addEventListener("click", () => {
+  if (musicAudio.paused || musicAudio.ended || !musicAudio.src) {
+    loadStation(stationIdx);
   } else {
     musicAudio.pause();
     musicBtn.textContent = "♪";
     musicBtn.classList.remove("playing");
   }
 });
+
+// Long-press or double-click to skip station
+let musicPressTimer;
+musicBtn.addEventListener("mousedown",  () => { musicPressTimer = setTimeout(() => loadStation(stationIdx + 1), 600); });
+musicBtn.addEventListener("touchstart", () => { musicPressTimer = setTimeout(() => loadStation(stationIdx + 1), 600); }, { passive: true });
+musicBtn.addEventListener("mouseup",    () => clearTimeout(musicPressTimer));
+musicBtn.addEventListener("touchend",   () => clearTimeout(musicPressTimer));
 
 /* ── back button ── */
 document.getElementById("btn-back").addEventListener("click", () => {
@@ -376,6 +406,8 @@ function connectWS() {
 
   ws.addEventListener("open", () => {
     sendWS({ type: "set_name", name: PLAYER_NAME });
+    // Keepalive ping every 25s to prevent server sleep on free hosting
+    ws._ping = setInterval(() => sendWS({ type: "ping" }), 25000);
   });
 
   ws.addEventListener("message", (e) => {
@@ -385,6 +417,7 @@ function connectWS() {
   });
 
   ws.addEventListener("close", () => {
+    clearInterval(ws._ping);
     if (!gameOver) showToast("Connection lost. Reconnecting…");
     setTimeout(connectWS, 2000);
   });
@@ -404,8 +437,24 @@ function handleMessage(msg) {
       puzzle = msg.puzzle;
       buildGrid();
       buildMiniGrid();
+
+      // Restore opponent fills that happened before we connected
+      if (msg.opponent && msg.opponent.filled) {
+        oppColor = msg.opponent.color || oppColor;
+        for (const key of Object.keys(msg.opponent.filled)) {
+          oppFills[key] = true;
+        }
+      }
+
       renderAll();
-      // Stay on waiting overlay — timer starts only on game_start
+
+      // Update mini-grid for pre-existing opponent fills
+      for (const key of Object.keys(oppFills)) {
+        const [r, c] = key.split(",").map(Number);
+        updateMiniCell(r, c);
+      }
+      updateOppProgress();
+
       document.getElementById("waiting-title").textContent = "Ready!";
       document.getElementById("waiting-sub").textContent   = "Waiting for your friend…";
       break;

@@ -154,6 +154,9 @@ async def _handle(room: dict, pid: str, data: dict):
     if not player or room["finished"]:
         return
 
+    if t == "ping":
+        return  # keepalive, no response needed
+
     if t == "set_name":
         player["name"] = str(data.get("name", "Player"))[:24]
         await _broadcast_except(room, pid, {
