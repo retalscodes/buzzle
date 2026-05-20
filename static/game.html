@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Buzzle — Game</title>
+  <link rel="stylesheet" href="/static/style.css" />
+  <link rel="manifest" href="/static/manifest.json" />
+  <meta name="theme-color" content="#F5BE18" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+</head>
+<body>
+<div class="game-page">
+
+  <!-- Top bar -->
+  <header class="game-header">
+    <button id="btn-back" class="btn btn-ghost btn-small">← Leave</button>
+    <div class="game-meta">
+      <span id="diff-badge" class="diff-badge"></span>
+      <span id="room-code-badge" class="room-badge"></span>
+    </div>
+    <div class="header-right">
+      <button id="btn-music" class="btn btn-ghost btn-small music-btn" title="Classical music">♪</button>
+      <div id="timer" class="timer">00:00</div>
+    </div>
+  </header>
+
+  <!-- Opponent panel -->
+  <div id="opp-panel" class="opp-panel hidden">
+    <div class="opp-info">
+      <span class="opp-dot" id="opp-dot"></span>
+      <span id="opp-name" class="opp-name">—</span>
+    </div>
+    <div id="opp-mini-grid" class="mini-grid"></div>
+    <div class="opp-progress-wrap">
+      <div class="opp-progress-bar">
+        <div class="opp-progress-fill" id="opp-progress"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hints + notes toggle -->
+  <div class="action-row">
+    <button id="btn-hint" class="btn btn-ghost btn-small">
+      💡 Hint <span id="hints-left" class="hint-count">3</span>
+    </button>
+    <button id="btn-notes" class="btn btn-ghost btn-small notes-toggle">
+      ✏️ Notes <span id="notes-state" class="notes-state">OFF</span>
+    </button>
+  </div>
+
+  <!-- Sudoku grid (square wrapper) -->
+  <div class="grid-outer">
+    <div id="sudoku-grid" class="sudoku-grid" role="grid" aria-label="Sudoku board"></div>
+  </div>
+
+  <!-- Number pad -->
+  <div id="numpad" class="numpad" role="group" aria-label="Number input">
+    <button class="num-btn" data-num="1">1</button>
+    <button class="num-btn" data-num="2">2</button>
+    <button class="num-btn" data-num="3">3</button>
+    <button class="num-btn" data-num="4">4</button>
+    <button class="num-btn" data-num="5">5</button>
+    <button class="num-btn" data-num="6">6</button>
+    <button class="num-btn" data-num="7">7</button>
+    <button class="num-btn" data-num="8">8</button>
+    <button class="num-btn" data-num="9">9</button>
+    <button class="num-btn erase-btn" data-num="0">⌫</button>
+  </div>
+
+</div><!-- /game-page -->
+
+<!-- Waiting overlay (before both players join) -->
+<div id="waiting-overlay" class="overlay">
+  <div class="modal waiting-modal">
+    <div class="result-emoji">🐝</div>
+    <h2 class="result-title" id="waiting-title">Setting up…</h2>
+    <p class="result-sub" id="waiting-sub">Waiting for your opponent to join</p>
+    <div class="waiting-dots"><span></span><span></span><span></span></div>
+  </div>
+</div>
+
+<!-- Win / Lose overlay -->
+<div id="overlay" class="overlay hidden" role="dialog" aria-modal="true">
+  <div class="modal">
+    <div id="result-emoji" class="result-emoji"></div>
+    <h2 id="result-title" class="result-title"></h2>
+    <p id="result-sub" class="result-sub"></p>
+    <div class="result-stats">
+      <div class="stat">
+        <span class="stat-val" id="stat-time">—</span>
+        <span class="stat-lbl">Time</span>
+      </div>
+      <div class="stat">
+        <span class="stat-val" id="stat-hints">—</span>
+        <span class="stat-lbl">Hints</span>
+      </div>
+      <div class="stat">
+        <span class="stat-val" id="stat-errors">—</span>
+        <span class="stat-lbl">Errors</span>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button id="btn-play-again" class="btn btn-primary btn-full">Play Again</button>
+      <button id="btn-home" class="btn btn-ghost btn-full">The Den</button>
+    </div>
+  </div>
+</div>
+
+<!-- Classical music (hidden) -->
+<audio id="music-audio" loop crossorigin="anonymous">
+  <source src="https://live.musopen.org:8085/streamvbr0" type="audio/mpeg" />
+</audio>
+
+<div id="toast" class="toast"></div>
+
+<script src="/static/game.js"></script>
+</body>
+</html>

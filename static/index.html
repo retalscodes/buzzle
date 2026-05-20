@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Buzzle — The Den</title>
+  <link rel="stylesheet" href="/static/style.css" />
+  <link rel="manifest" href="/static/manifest.json" />
+  <meta name="theme-color" content="#F5BE18" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+</head>
+<body>
+  <div class="den-wrap">
+    <header class="den-header">
+      <img src="/static/logo.png" alt="Buzzle" class="den-logo" onerror="this.src='/static/logo.svg'" />
+      <h1 class="den-title flicker">The Den</h1>
+      <p class="den-sub">Solve puzzles together</p>
+    </header>
+
+    <main class="den-main">
+      <!-- Player name -->
+      <section class="card name-card">
+        <label class="field-label" for="player-name">Your name</label>
+        <input
+          id="player-name"
+          class="field-input"
+          type="text"
+          maxlength="18"
+          placeholder="e.g. Bumblebee"
+          autocomplete="off"
+          spellcheck="false"
+        />
+      </section>
+
+      <!-- Difficulty -->
+      <section class="card diff-card">
+        <span class="field-label">Difficulty</span>
+        <div class="diff-group" role="radiogroup" aria-label="Difficulty">
+          <label class="diff-btn" data-diff="easy">
+            <input type="radio" name="diff" value="easy" />
+            Easy
+          </label>
+          <label class="diff-btn" data-diff="medium">
+            <input type="radio" name="diff" value="medium" checked />
+            Medium
+          </label>
+          <label class="diff-btn" data-diff="hard">
+            <input type="radio" name="diff" value="hard" />
+            Hard
+          </label>
+          <label class="diff-btn" data-diff="expert">
+            <input type="radio" name="diff" value="expert" />
+            Expert
+          </label>
+        </div>
+      </section>
+
+      <!-- Create room -->
+      <section class="card create-card">
+        <h2 class="card-heading">Create a room</h2>
+        <p class="card-hint">Share the code with a friend and solve together.</p>
+        <button id="btn-create" class="btn btn-primary">Create Room</button>
+
+        <div id="room-created" class="room-display hidden">
+          <p class="room-label">Room code</p>
+          <div class="room-code-row">
+            <span id="room-code-text" class="room-code"></span>
+            <button id="btn-copy" class="btn btn-ghost btn-small" title="Copy code">Copy</button>
+          </div>
+          <p class="room-status" id="room-status">Waiting for your friend…</p>
+          <button id="btn-cancel" class="btn btn-ghost btn-small">Cancel</button>
+        </div>
+      </section>
+
+      <!-- Join room -->
+      <section class="card join-card">
+        <h2 class="card-heading">Join a room</h2>
+        <p class="card-hint">Enter the 6-character code your friend shared.</p>
+        <div class="join-row">
+          <input
+            id="join-code"
+            class="field-input code-input"
+            type="text"
+            maxlength="6"
+            placeholder="ABCD12"
+            autocomplete="off"
+            spellcheck="false"
+          />
+          <button id="btn-join" class="btn btn-accent">Join</button>
+        </div>
+        <p id="join-error" class="error-msg hidden"></p>
+      </section>
+    </main>
+
+    <footer class="den-footer">
+      <span class="theme-label" id="theme-label"></span>
+    </footer>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

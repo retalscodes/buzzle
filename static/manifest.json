@@ -1,0 +1,18 @@
+{
+  "name": "Buzzle",
+  "short_name": "Buzzle",
+  "description": "Solve puzzles together — real-time multiplayer Sudoku",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FFF8E0",
+  "theme_color": "#F5BE18",
+  "icons": [
+    {
+      "src": "/static/logo.png",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
