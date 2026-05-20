@@ -416,8 +416,14 @@ function connectWS() {
     handleMessage(msg);
   });
 
-  ws.addEventListener("close", () => {
+  ws.addEventListener("close", (e) => {
     clearInterval(ws._ping);
+    // 4004 = room not found, 4003 = room full — no point reconnecting
+    if (e.code === 4004 || e.code === 4003) {
+      showToast("Room expired. Returning to Den…");
+      setTimeout(() => { location.href = "/"; }, 2500);
+      return;
+    }
     if (!gameOver) showToast("Connection lost. Reconnecting…");
     setTimeout(connectWS, 2000);
   });
