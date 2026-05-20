@@ -438,10 +438,16 @@ function handleMessage(msg) {
       buildGrid();
       buildMiniGrid();
 
-      // Restore opponent fills that happened before we connected
-      if (msg.opponent && msg.opponent.filled) {
+      // Restore opponent state (pre-existing fills + name for bot games)
+      if (msg.opponent) {
         oppColor = msg.opponent.color || oppColor;
-        for (const key of Object.keys(msg.opponent.filled)) {
+        oppName  = msg.opponent.name  || "";
+        if (oppName) {
+          oppDotEl.style.background = oppColor;
+          oppNameEl.textContent = oppName;
+          oppPanel.classList.remove("hidden");
+        }
+        for (const key of Object.keys(msg.opponent.filled || {})) {
           oppFills[key] = true;
         }
       }

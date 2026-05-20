@@ -8,98 +8,156 @@
   <link rel="manifest" href="/static/manifest.json" />
   <meta name="theme-color" content="#F5BE18" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
 </head>
 <body>
-  <div class="den-wrap">
-    <header class="den-header">
-      <img src="/static/logo.png" alt="Buzzle" class="den-logo" onerror="this.src='/static/logo.svg'" />
-      <h1 class="den-title flicker">The Den</h1>
-      <p class="den-sub">Solve puzzles together</p>
-    </header>
+<div class="den-wrap">
+  <div class="screens-outer">
+    <div class="screens" id="screens">
 
-    <main class="den-main">
-      <!-- Player name -->
-      <section class="card name-card">
-        <label class="field-label" for="player-name">Your name</label>
-        <input
-          id="player-name"
-          class="field-input"
-          type="text"
-          maxlength="18"
-          placeholder="e.g. Bumblebee"
-          autocomplete="off"
-          spellcheck="false"
-        />
-      </section>
-
-      <!-- Difficulty -->
-      <section class="card diff-card">
-        <span class="field-label">Difficulty</span>
-        <div class="diff-group" role="radiogroup" aria-label="Difficulty">
-          <label class="diff-btn" data-diff="easy">
-            <input type="radio" name="diff" value="easy" />
-            Easy
-          </label>
-          <label class="diff-btn" data-diff="medium">
-            <input type="radio" name="diff" value="medium" checked />
-            Medium
-          </label>
-          <label class="diff-btn" data-diff="hard">
-            <input type="radio" name="diff" value="hard" />
-            Hard
-          </label>
-          <label class="diff-btn" data-diff="expert">
-            <input type="radio" name="diff" value="expert" />
-            Expert
-          </label>
+      <!-- ── Screen 1: Landing ── -->
+      <div class="screen" id="s-land">
+        <div class="den-hero">
+          <img src="/static/logo.png" class="den-logo" alt="Buzzle"
+               onerror="this.src='/static/logo.svg'" />
+          <h1 class="den-title flicker">Buzzle</h1>
+          <p class="den-sub">Puzzles &amp; games, together</p>
         </div>
-      </section>
+        <div class="land-form">
+          <label class="field-label" for="player-name">What's your name?</label>
+          <input id="player-name" class="field-input" type="text"
+                 maxlength="18" placeholder="e.g. Bumblebee"
+                 autocomplete="off" spellcheck="false" />
+          <button id="btn-enter" class="btn btn-primary btn-full btn-lg">
+            Enter the Den →
+          </button>
+        </div>
+        <span class="theme-label" id="theme-label"></span>
+      </div>
 
-      <!-- Create room -->
-      <section class="card create-card">
-        <h2 class="card-heading">Create a room</h2>
-        <p class="card-hint">Share the code with a friend and solve together.</p>
-        <button id="btn-create" class="btn btn-primary">Create Room</button>
+      <!-- ── Screen 2: Game Gallery ── -->
+      <div class="screen" id="s-games">
+        <div class="screen-header">
+          <button class="btn btn-ghost btn-small" data-to="s-land">← Back</button>
+          <span class="screen-title">Pick a game</span>
+          <span class="greeting" id="greeting"></span>
+        </div>
+        <div class="game-cards">
+          <div class="game-card" data-game="sudoku">
+            <div class="gc-bg gc-sudoku"></div>
+            <span class="gc-icon">🔢</span>
+            <strong class="gc-name">Sudoku</strong>
+            <span class="gc-desc">Number logic</span>
+            <span class="gc-tag">2P · Bot</span>
+          </div>
+          <div class="game-card" data-game="bingo">
+            <div class="gc-bg gc-bingo"></div>
+            <span class="gc-icon">🎱</span>
+            <strong class="gc-name">Bingo</strong>
+            <span class="gc-desc">Call the card</span>
+            <span class="gc-tag gc-soon">Soon</span>
+          </div>
+          <div class="game-card" data-game="chess">
+            <div class="gc-bg gc-chess"></div>
+            <span class="gc-icon">♟️</span>
+            <strong class="gc-name">Chess</strong>
+            <span class="gc-desc">Classic duel</span>
+            <span class="gc-tag gc-soon">Soon</span>
+          </div>
+          <div class="game-card" data-game="checkers">
+            <div class="gc-bg gc-checkers"></div>
+            <span class="gc-icon">🔴</span>
+            <strong class="gc-name">Checkers</strong>
+            <span class="gc-desc">Jump to win</span>
+            <span class="gc-tag gc-soon">Soon</span>
+          </div>
+        </div>
+      </div>
 
-        <div id="room-created" class="room-display hidden">
-          <p class="room-label">Room code</p>
+      <!-- ── Screen 3: Play Options ── -->
+      <div class="screen" id="s-options">
+        <div class="screen-header">
+          <button class="btn btn-ghost btn-small" data-to="s-games">← Back</button>
+          <div class="selected-game-label">
+            <span id="sg-icon"></span>
+            <span id="sg-name"></span>
+          </div>
+        </div>
+
+        <!-- Difficulty (Sudoku only) -->
+        <div id="diff-section" class="config-section hidden">
+          <span class="field-label">Difficulty</span>
+          <div class="diff-group">
+            <label class="diff-btn" data-diff="easy">
+              <input type="radio" name="diff" value="easy" />Easy
+            </label>
+            <label class="diff-btn" data-diff="medium">
+              <input type="radio" name="diff" value="medium" checked />Medium
+            </label>
+            <label class="diff-btn" data-diff="hard">
+              <input type="radio" name="diff" value="hard" />Hard
+            </label>
+            <label class="diff-btn" data-diff="expert">
+              <input type="radio" name="diff" value="expert" />Expert
+            </label>
+          </div>
+        </div>
+
+        <!-- Play mode buttons -->
+        <div class="play-modes">
+          <button class="play-mode-btn" id="btn-create">
+            <span class="pm-icon">🎮</span>
+            <span class="pm-text">
+              <strong>Create Room</strong>
+              <small>Invite a friend</small>
+            </span>
+            <span class="pm-chevron">›</span>
+          </button>
+          <button class="play-mode-btn" id="btn-join-toggle">
+            <span class="pm-icon">🔗</span>
+            <span class="pm-text">
+              <strong>Join Room</strong>
+              <small>Enter a code</small>
+            </span>
+            <span class="pm-chevron">›</span>
+          </button>
+          <button class="play-mode-btn" id="btn-bot">
+            <span class="pm-icon">🤖</span>
+            <span class="pm-text">
+              <strong>vs Bot</strong>
+              <small>Solo challenge</small>
+            </span>
+            <span class="pm-chevron">›</span>
+          </button>
+        </div>
+
+        <!-- Expandable: Join room -->
+        <div id="join-section" class="expandable hidden">
+          <div class="join-row">
+            <input id="join-code" class="field-input code-input"
+                   type="text" maxlength="6" placeholder="ABCD12"
+                   autocomplete="off" spellcheck="false" />
+            <button id="btn-join" class="btn btn-accent">Join</button>
+          </div>
+          <p id="join-error" class="error-msg hidden"></p>
+        </div>
+
+        <!-- Expandable: Room created -->
+        <div id="room-created" class="expandable hidden">
+          <p class="room-label">Share this code</p>
           <div class="room-code-row">
             <span id="room-code-text" class="room-code"></span>
-            <button id="btn-copy" class="btn btn-ghost btn-small" title="Copy code">Copy</button>
+            <button id="btn-copy" class="btn btn-ghost btn-small">Copy</button>
           </div>
           <p class="room-status" id="room-status">Waiting for your friend…</p>
           <button id="btn-cancel" class="btn btn-ghost btn-small">Cancel</button>
         </div>
-      </section>
 
-      <!-- Join room -->
-      <section class="card join-card">
-        <h2 class="card-heading">Join a room</h2>
-        <p class="card-hint">Enter the 6-character code your friend shared.</p>
-        <div class="join-row">
-          <input
-            id="join-code"
-            class="field-input code-input"
-            type="text"
-            maxlength="6"
-            placeholder="ABCD12"
-            autocomplete="off"
-            spellcheck="false"
-          />
-          <button id="btn-join" class="btn btn-accent">Join</button>
-        </div>
-        <p id="join-error" class="error-msg hidden"></p>
-      </section>
-    </main>
+      </div>
+    </div><!-- /screens -->
+  </div><!-- /screens-outer -->
+</div><!-- /den-wrap -->
 
-    <footer class="den-footer">
-      <span class="theme-label" id="theme-label"></span>
-    </footer>
-  </div>
-
-  <div id="toast" class="toast"></div>
-
-  <script src="/static/app.js"></script>
+<div id="toast" class="toast"></div>
+<script src="/static/app.js"></script>
 </body>
 </html>

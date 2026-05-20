@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Buzzle — Bingo</title>
+  <link rel="stylesheet" href="/static/style.css" />
+  <link rel="manifest" href="/static/manifest.json" />
+  <meta name="theme-color" content="#F5BE18" />
+  <style>
+    body { display:flex; flex-direction:column; align-items:center;
+           justify-content:center; min-height:100vh; gap:1rem;
+           background:#0E1228; color:#fff; font-family:system-ui,sans-serif;
+           text-align:center; margin:0; }
+    .cs-emoji { font-size:6rem; line-height:1; }
+    .cs-name  { font-size:2.5rem; font-weight:800; color:#FFE566; margin:0; }
+    .cs-soon  { font-size:1.25rem; opacity:.8; margin:0; }
+    .den-logo { width:72px; height:72px; object-fit:contain; }
+  </style>
+</head>
+<body class="theme-night">
+  <img src="/static/logo.png" class="den-logo" alt="Buzzle"
+       onerror="this.src='/static/logo.svg'" />
+  <div class="cs-emoji">🎱</div>
+  <h1 class="cs-name">Bingo</h1>
+  <p class="cs-soon">Coming soon 🐝</p>
+  <a href="/" class="btn btn-ghost">← Back to Den</a>
+</body>
+</html>
